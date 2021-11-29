@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: foodlessons-deployment
+  labels:
+    app: foodlessons
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: foodlessons
+  template:
+    metadata:
+      labels:
+        app: foodlessons
+    spec:
+      containers:
+      - name: foodlessons
+        image: gcr.io/norwegian-language-bank/foodlessons:c71e32f7-cf26-4e2d-98c0-c20f378fab15
+        command: [ "/bin/bash" ]
+        args: [ "-c", "streamlit run foodlessons.py --server.port 8501 --server.baseUrlPath /foodlessons"]
+        ports:
+        - containerPort: 8501
+        resources:
+          limits:
+            cpu: 250m
+            ephemeral-storage: 256Mi
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            ephemeral-storage: 256Mi
+            memory: 512Mi
